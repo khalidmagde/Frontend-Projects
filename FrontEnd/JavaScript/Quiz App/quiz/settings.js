@@ -15,20 +15,24 @@ class Settings {
     this.startBtn.addEventListener("click", this.startQuizApp);
   }
 
-  startQuizApp = () => {
-    const amount = this.getAmount();
-    const categoryID = 9;
-    const difficulty = this.getDifficulty();
-    let result;
-
-    const url = `https://opentdb.com/api.php?amount=${amount}&category=${categoryID}&difficulty=${difficulty}`;
-
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) =>{
-        (result = data.result)
-      });
+  startQuizApp = async () => {
+    try {
+      const amount = this.getAmount();
+      const categoryID = this.categoryDom.value;
+      const difficulty = this.getDifficulty();
+     
+      const url = `https://opentdb.com/api.php?amount=${amount}&category=${categoryID}&difficulty=${difficulty}`;
+      let {results} = await this.fetchData(url);
+      this.toggleElements();
+    } catch (err) {
+      alert(err);
+    }
   };
+
+  toggleElements= ()=>{
+    this.quizDom.style.display= "block";
+        this.SettingDom.style.display= "none";
+  }
 
   getDifficulty=()=>{
     const difficulty = this.difficulty.filter((el)=>el.checked);
@@ -46,6 +50,12 @@ class Settings {
     }else{
       alert("please Enter Question");
     }
+  };
+
+  fetchData=async (url)=>{
+    const response = await fetch(url);
+    const result = await response.json();
+    return result;
   };
 }
 
