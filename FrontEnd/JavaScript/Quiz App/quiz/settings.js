@@ -23,6 +23,7 @@ class Settings {
      
       const url = `https://opentdb.com/api.php?amount=${amount}&category=${categoryID}&difficulty=${difficulty}`;
       let {results} = await this.fetchData(url);
+      console.log(results)
       this.toggleElements();
     } catch (err) {
       alert(err);
