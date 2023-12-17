@@ -1,4 +1,5 @@
 //https://opentdb.com/api.php?amount=10&category=9&difficulty=easy
+import Quiz from "./quiz.js";
 class Settings {
   constructor() {
     this.SettingDom = document.querySelector(".settings");
@@ -24,6 +25,8 @@ class Settings {
       const url = `https://opentdb.com/api.php?amount=${amount}&category=${categoryID}&difficulty=${difficulty}`;
       let {results} = await this.fetchData(url);
       console.log(results)
+
+      this.quiz = new Quiz(this.quizDom , amount , results)
       this.toggleElements();
     } catch (err) {
       alert(err);
